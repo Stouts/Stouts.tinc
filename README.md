@@ -28,9 +28,9 @@ Add `Stouts.tinc` to your roles and setup your inventory and playbooks.
 Example (inventory):
 ```ini
 [vpn]
-host1 tinc_ip=10.1.0.10 ansible_ssh_host=11.11.11.11
-host2 tinc_ip=10.1.0.10 ansible_ssh_host=11.11.11.11
-host3 tinc_ip=10.1.0.10 ansible_ssh_host=11.11.11.11
+host1 tinc_ip=10.1.0.10 ansible_ssh_host=11.11.11.10
+host2 tinc_ip=10.1.0.20 ansible_ssh_host=11.11.11.20
+host3 tinc_ip=10.1.0.30 ansible_ssh_host=11.11.11.30
 ```
 
 ```yaml
