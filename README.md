@@ -1,4 +1,4 @@
-Stouts.tinc 0.1.0
+Stouts.tinc 0.1.1
 =================
 
 Ansible role to manage Tinc VPN
@@ -16,7 +16,7 @@ tinc_hosts: []
 
 # Host Physical IP
 tinc_physical_ip: "{{ansible_eth0.ipv4.address}}"
-tinc_ip: 10.1.0.1                 # Tinc VPN IP
+tinc_ip: 10.1.1.1                 # Tinc VPN IP
 tinc_vpn_netmask: 255.255.255.0   # Tinc VPN Netmask
 tinc_vpn_cidr_netmask: 32         # Tinc VPN CIDR
 ```
@@ -28,9 +28,9 @@ Add `Stouts.tinc` to your roles and setup your inventory and playbooks.
 Example (inventory):
 ```ini
 [vpn]
-host1 tinc_ip=10.1.0.10 ansible_ssh_host=11.11.11.10
-host2 tinc_ip=10.1.0.20 ansible_ssh_host=11.11.11.20
-host3 tinc_ip=10.1.0.30 ansible_ssh_host=11.11.11.30
+host1 tinc_ip=10.1.1.10 ansible_ssh_host=11.11.11.10
+host2 tinc_ip=10.1.1.20 ansible_ssh_host=11.11.11.20
+host3 tinc_ip=10.1.1.30 ansible_ssh_host=11.11.11.30
 ```
 
 ```yaml
