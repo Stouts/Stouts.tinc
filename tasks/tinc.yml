@@ -1,0 +1,81 @@
+---
+
+- name: Install Tinc
+  package:
+      name: tinc
+      state: latest
+
+- name: Create Tinc VPN directory exists
+  file:
+      path: /etc/tinc/{{ tinc_netname }}/hosts
+      recurse: true
+      state: directory
+
+- name: Setup Tinc Configuration
+  template:
+      src: tinc.conf
+      dest: "/etc/tinc/{{tinc_netname}}/tinc.conf"
+  notify: tinc reload
+
+- name: Setup Tinc Hosts pt.1
+  lineinfile:
+      dest: "/etc/tinc/{{ tinc_netname }}/hosts/{{ inventory_hostname }}"
+      line: "Address = {{ tinc_physical_ip }}"
+      create: true
+  notify: tinc restart
+
+- name: Setup Tinc Hosts pt.2
+  lineinfile:
+      dest: "/etc/tinc/{{ tinc_netname }}/hosts/{{ inventory_hostname }}"
+      line: "Subnet = {{ tinc_ip }}/{{ tinc_vpn_cidr_netmask }}"
+      create: yes
+  notify: tinc restart
+
+- name: Create Tinc private key
+  shell: tincd -n {{ tinc_netname }} -K4096
+  args:
+    creates: /etc/tinc/{{ tinc_netname }}/rsa_key.priv
+  notify:
+  - tinc restart
+
+- name: Setup Tinc scripts
+  template:
+      src: "{{item}}"
+      dest: "/etc/tinc/{{tinc_netname}}/{{item}}"
+      mode: 0755
+  with_items: ['tinc-up', 'tinc-down']
+  notify: tinc restart
+
+- name: Fetch Tinc Hosts files
+  fetch:
+      src: "/etc/tinc/{{ tinc_netname }}/hosts/{{ inventory_hostname }}"
+      dest: "fetch/{{ inventory_hostname }}"
+      flat: yes
+  notify: tinc reload
+
+- name: Synchronize Tinc Hosts files
+  synchronize:
+      src: fetch/
+      dest: "/etc/tinc/{{ tinc_netname }}/hosts/"
+  notify: tinc reload
+
+- name: Enable Tinc network
+  template:
+      src: nets.boot
+      dest: /etc/tinc/nets.boot
+  notify: tinc restart
+
+- name: Ensure Tinc is started
+  service:
+    name: tinc
+    enabled: yes
+    state: started
+
+- name: Add nodes to /etc/hosts
+  lineinfile:
+      dest: /etc/hosts
+      regexp: ".*{{ item.key }}$"
+      line: "{{ item.value.tinc_ip }} {{item.key}}"
+      state: present
+  when: item.value.tinc_ip is defined
+  with_dict: "{{ hostvars }}"

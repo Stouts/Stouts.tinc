@@ -1,0 +1,11 @@
+---
+
+tinc_enabled: yes                 # The role in enabled
+tinc_netname: net                 # Tinc Name of VPN network
+tinc_vpn_interface: tun0          # Tinc VPN Interface
+
+# Host Physical IP
+tinc_physical_ip: "{{ansible_eth0.ipv4.address}}"
+tinc_ip: 10.0.0.1                 # Tinc VPN IP
+tinc_vpn_netmask: 255.255.255.0   # Tinc VPN Netmask
+tinc_vpn_cidr_netmask: 32         # Tinc VPN CIDR
