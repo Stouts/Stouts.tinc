@@ -9,3 +9,4 @@ tinc_physical_ip: "{{ansible_eth0.ipv4.address}}"
 tinc_ip: 10.0.0.1                 # Tinc VPN IP
 tinc_vpn_netmask: 255.255.255.0   # Tinc VPN Netmask
 tinc_vpn_cidr_netmask: 32         # Tinc VPN CIDR
+tinc_hostname: "{{ inventory_hostname.replace('.', '_').replace('-', '_') }}"

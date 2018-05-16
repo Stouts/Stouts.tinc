@@ -2,10 +2,10 @@
 
 - name: tinc restart
   service:
-      name: tinc
+      name: "tinc@{{ tinc_netname }}"
       state: restarted
 
 - name: tinc reload
   service:
-      name: tinc
+      name: "tinc@{{ tinc_netname }}"
       state: reloaded

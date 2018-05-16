@@ -19,14 +19,14 @@
 
 - name: Setup Tinc Hosts pt.1
   lineinfile:
-      dest: "/etc/tinc/{{ tinc_netname }}/hosts/{{ inventory_hostname }}"
+      dest: "/etc/tinc/{{ tinc_netname }}/hosts/{{ tinc_hostname }}"
       line: "Address = {{ tinc_physical_ip }}"
       create: true
   notify: tinc restart
 
 - name: Setup Tinc Hosts pt.2
   lineinfile:
-      dest: "/etc/tinc/{{ tinc_netname }}/hosts/{{ inventory_hostname }}"
+      dest: "/etc/tinc/{{ tinc_netname }}/hosts/{{ tinc_hostname }}"
       line: "Subnet = {{ tinc_ip }}/{{ tinc_vpn_cidr_netmask }}"
       create: yes
   notify: tinc restart
@@ -48,8 +48,8 @@
 
 - name: Fetch Tinc Hosts files
   fetch:
-      src: "/etc/tinc/{{ tinc_netname }}/hosts/{{ inventory_hostname }}"
-      dest: "fetch/{{ inventory_hostname }}"
+      src: "/etc/tinc/{{ tinc_netname }}/hosts/{{ tinc_hostname  }}"
+      dest: "fetch/{{ tinc_hostname  }}"
       flat: yes
   notify: tinc reload
 
@@ -67,7 +67,7 @@
 
 - name: Ensure Tinc is started
   service:
-    name: tinc
+    name: "tinc@{{ tinc_netname }}"
     enabled: yes
     state: started
 
