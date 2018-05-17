@@ -49,13 +49,13 @@
 - name: Fetch Tinc Hosts files
   fetch:
       src: "/etc/tinc/{{ tinc_netname }}/hosts/{{ tinc_hostname  }}"
-      dest: "fetch/{{ tinc_hostname  }}"
+      dest: ".fetch/{{ tinc_hostname  }}"
       flat: yes
   notify: tinc reload
 
 - name: Synchronize Tinc Hosts files
   synchronize:
-      src: fetch/
+      src: ".fetch/"
       dest: "/etc/tinc/{{ tinc_netname }}/hosts/"
   notify: tinc reload
 
