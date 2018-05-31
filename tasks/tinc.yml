@@ -74,8 +74,8 @@
 - name: Add nodes to /etc/hosts
   lineinfile:
       dest: /etc/hosts
-      regexp: ".*{{ item.key }}$"
-      line: "{{ item.value.tinc_ip }} {{item.key}}"
+      regexp: ".*{{ item }}$"
+      line: "{{ hostvars[item].tinc_ip }} {{item}}"
       state: present
-  when: item.value.tinc_ip is defined
-  with_dict: "{{ hostvars }}"
+  when: hostvars[item].tinc_ip is defined
+  with_items: "{{ hostvars }}"
