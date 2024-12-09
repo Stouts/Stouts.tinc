@@ -5,7 +5,7 @@
       name: tinc
       state: latest
 
-- name: Create Tinc VPN directory exists
+- name: Create Tinc VPN directory
   file:
       path: /etc/tinc/{{ tinc_netname }}/hosts
       recurse: true
